@@ -34,11 +34,34 @@ router.get("/:id", async (req, res, next) => {
 
 // Read - all books
 router.get("/", async (req, res, next) => {
+  let { authorId } = req.query
   let { page, perPage } = req.query;
   page = page ? Number(page) : 0;
   perPage = perPage ? Number(perPage) : 10;
-  const books = await bookDAO.getAll(page, perPage);
-  res.json(books);
+
+  if ( authorId != undefined ) {
+    const books = await bookDAO.getAllByAuthor(authorId, page, perPage);
+    res.json(books);
+  } else {
+    const books = await bookDAO.getAll(page, perPage);
+    res.json(books);
+  }
+});
+
+// Read - all books
+router.get("/search", async (req, res, next) => {
+  let { searchTerm } = req.query
+  console.log(searchTerm);
+  console.log(req.query);
+/*
+  if ( authorId != undefined ) {
+    const books = await bookDAO.getAllByAuthor(authorId, page, perPage);
+    res.json(books);
+  } else {
+    const books = await bookDAO.getAll(page, perPage);
+    res.json(books);
+  }
+  */
 });
 
 // Update

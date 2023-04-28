@@ -12,6 +12,8 @@ module.exports.getById = (authorId) => {
   if (!mongoose.Types.ObjectId.isValid(authorId)) {
     return null;
   }
+  // console.log(Author.findOne({ _id: authorId }).lean());
+  Author.index
   return Author.findOne({ _id: authorId }).lean();
 }
 
