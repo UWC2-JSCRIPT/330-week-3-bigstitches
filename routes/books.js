@@ -6,6 +6,7 @@ const bookDAO = require('../daos/book');
 // Create
 router.post("/", async (req, res, _next) => {
   const book = req.body;
+  // console.log(book);
   if (!book || JSON.stringify(book) === '{}' ) {
     res.status(400).send('book is required');
   } else {
@@ -15,6 +16,8 @@ router.post("/", async (req, res, _next) => {
     } catch(e) {
       if (e instanceof bookDAO.BadDataError) {
         res.status(400).send(e.message);
+      } else if (e.code === 11000 ) {
+        res.status(400).send(`${e.keyValue} is not unique`);
       } else {
         res.status(500).send(e.message);
       }
@@ -34,34 +37,9 @@ router.get("/search", async (req, res, next) => {
 
 // Read - transaction stats
 router.get("/authors/stats", async (req, res, next) => {
-  // console.log('in /authors/stats');
-  // const authorInfo = req.params.authorInfo;
-  // oh no, use {} for params!!
   const { authorInfo } = req.query;
-  const authorId = req.params.authorId;
-  console.log('id: ', req.params.authorId);
-  console.log('query: ', req.query);
-  console.log('in route: URL: ', req.originalUrl);
-  console.log('3: ', req.path);
-  console.log('4: ', req.headers);
-  console.log('5: ', req.body);
-  console.log('6: ', req.params);
-  console.log('7: ', req.subdomains);
-  // ooooooh, should just return ALLLLL authors' STATS!!
-  const stats = await bookDAO.getAuthorStats();
-  console.log(stats);
-  // res.json(stats[stats.length - 1]);
+  const stats = await bookDAO.getAuthorStats(authorInfo);
   res.json(stats);
-  /*
-  if (authorInfo) {
-    // const stats = bookDAO.getFullAuthorStats(authorId);
-    const stats = null;
-    res.json(stats);
-  } else {
-    const stats = bookDAO.getAuthorStats(authorId);
-    res.json(stats);
-  }
-  */
 });
 
 
