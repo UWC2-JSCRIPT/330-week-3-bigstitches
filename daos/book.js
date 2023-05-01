@@ -118,7 +118,7 @@ module.exports.create = async (bookData) => {
 
 
     const created = await Book.create(bookData);
-    console.log(created.ISBN);
+    // console.log(created.ISBN);
     return created;
 
 /*
@@ -141,7 +141,7 @@ module.exports.create = async (bookData) => {
     //  return created;
     //}
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     if (e.message.includes('validation failed')) {
       throw new BadDataError(e.message);
     }
