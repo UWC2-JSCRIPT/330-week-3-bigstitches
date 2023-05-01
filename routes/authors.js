@@ -33,8 +33,13 @@ router.get("/:id", async (req, res, next) => {
 });
 
 // Read - all authors
+// get all appears to work
 router.get("/", async (req, res, next) => {
+  // console.log(page);
+  // console.log(perPage);
   let { page, perPage } = req.query;
+  // console.log(page);
+  // console.log(perPage);
   page = page ? Number(page) : 0;
   perPage = perPage ? Number(perPage) : 10;
   const authors = await authorDAO.getAll(page, perPage);
